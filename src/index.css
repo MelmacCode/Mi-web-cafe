@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 20 14% 93%;
+    --foreground: 14 26% 19%;
+    --card: 30 20% 97%;
+    --card-foreground: 14 26% 19%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 14 26% 19%;
+    --primary: 14 26% 19%;
+    --primary-foreground: 30 20% 97%;
+    --secondary: 20 14% 93%;
+    --secondary-foreground: 14 26% 19%;
+    --muted: 20 14% 93%;
+    --muted-foreground: 14 18% 47%;
+    --accent: 25 29% 33%;
+    --accent-foreground: 30 20% 97%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 16 16% 83%;
+    --input: 16 16% 83%;
+    --ring: 25 29% 33%;
+    --radius: 0.5rem;
+  }
+
+  body {
+    @apply bg-coffee-100 text-coffee-700 font-sans antialiased;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .text-shadow-hero {
+    text-shadow: 0 2px 30px rgba(0,0,0,0.5);
+  }
+
+  .text-shadow-hero-sm {
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+  }
+}
+
+@layer utilities {
+  .parallax-block {
+    @apply overflow-hidden;
+  }
+
+  .parallax-block img {
+    @apply will-change-transform;
+    min-height: 115%;
+  }
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
