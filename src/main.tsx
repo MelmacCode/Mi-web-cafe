@@ -1,13 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter } from 'react-router'
+import { CartProvider } from './context/CartContext'  // ← IMPORTAMOS
 import './index.css'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <HashRouter>
+    <CartProvider>  {/* ← ENVOLVEMOS: ahora toda la app tiene acceso al carrito */}
       <App />
-    </HashRouter>
+    </CartProvider>
   </StrictMode>,
 )

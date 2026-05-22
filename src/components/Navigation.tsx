@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
+import CartDrawer from './CartDrawer';
 
 const navLinks = [
   { label: 'Inicio', to: '/' },
@@ -78,24 +79,36 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* CTA Button */}
-          <Link
-            to="/tienda"
-            className="hidden md:inline-block px-6 py-2.5 rounded-pill bg-cafe-500 text-white text-xs font-sans font-bold uppercase tracking-[0.1em] hover:bg-coffee-900 transition-colors duration-200"
-          >
-            Comprar
-          </Link>
+          {/* Right section: CTA (desktop) + Cart + Hamburger (mobile) */}
+          <div className="flex items-center gap-3">
+            {/* CTA Button — solo desktop */}
+            <Link
+              to="/tienda"
+              className="hidden md:inline-block px-6 py-2.5 rounded-pill bg-cafe-500 text-white text-xs font-sans font-bold uppercase tracking-[0.1em] hover:bg-coffee-900 transition-colors duration-200"
+            >
+              Comprar
+            </Link>
 
-          {/* Mobile Hamburger */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className={`md:hidden flex flex-col gap-1.5 p-2 ${showLightBg ? 'text-coffee-900' : 'text-white'}`}
-            aria-label="Abrir menú"
-          >
-            <span className="block w-6 h-0.5 bg-current" />
-            <span className="block w-6 h-0.5 bg-current" />
-            <span className="block w-6 h-0.5 bg-current" />
-          </button>
+            {/* 🛒 CARRITO — visible en desktop y mobile */}
+            <CartDrawer
+              triggerClassName={
+                showLightBg ? 'text-coffee-900' : 'text-white'
+              }
+            />
+
+            {/* Mobile Hamburger — solo mobile */}
+            <button
+              onClick={() => setMobileOpen(true)}
+              className={`md:hidden flex flex-col gap-1.5 p-2 ${
+                showLightBg ? 'text-coffee-900' : 'text-white'
+              }`}
+              aria-label="Abrir menú"
+            >
+              <span className="block w-6 h-0.5 bg-current" />
+              <span className="block w-6 h-0.5 bg-current" />
+              <span className="block w-6 h-0.5 bg-current" />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -107,7 +120,14 @@ export default function Navigation() {
             className="absolute top-5 right-6 text-white p-2"
             aria-label="Cerrar menú"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
               <line x1="4" y1="4" x2="20" y2="20" />
               <line x1="20" y1="4" x2="4" y2="20" />
             </svg>
