@@ -1,16 +1,11 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+// src/context/CartContext.tsx
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { Product } from '@/data/products';
 
-// ═══════════════════════════════════════════════════════════════
-// 1. TIPO DEL ITEM EN CARRITO
-// ═══════════════════════════════════════════════════════════════
 interface CartItem extends Product {
   quantity: number;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// 2. TIPO DEL CONTEXTO
-// ═══════════════════════════════════════════════════════════════
 interface CartContextType {
   items: CartItem[];
   addItem: (product: Product) => void;
@@ -21,50 +16,55 @@ interface CartContextType {
   clearCart: () => void;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// 3. CREAR EL CONTEXTO — UNA SOLA "<"
-// ═══════════════════════════════════════════════════════════════
-const CartContext = createContext<CartContextType | undefined>(undefined);
+const CartContext = createContext<CartContextType | null>(null);
 
-// ═══════════════════════════════════════════════════════════════
-// 4. PROVEEDOR
-// ═══════════════════════════════════════════════════════════════
 export function CartProvider({ children }: { children: React.ReactNode }) {
   
-  // UNA SOLA "<" en useState
   const [items, setItems] = useState<CartItem[]>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('donmoncho-cart');
-      return saved ? JSON.parse(saved) : [];
+      try {
+        const saved = localStorage.getItem('donmoncho-cart');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          console.log('✅ Carrito cargado desde localStorage:', parsed);
+          return Array.isArray(parsed) ? parsed : [];
+        }
+      } catch (e) {
+        console.error('❌ Error leyendo localStorage:', e);
+      }
     }
+    console.log('🆕 Carrito vacío (inicial)');
     return [];
   });
 
-  // Persistir en localStorage
   useEffect(() => {
+    console.log('💾 Guardando carrito:', items);
     localStorage.setItem('donmoncho-cart', JSON.stringify(items));
   }, [items]);
 
-  // Agregar producto
-  const addItem = (product: Product) => {
+  const addItem = useCallback((product: Product) => {
+    console.log('🛒 addItem llamado:', product);
     setItems((prev) => {
+      console.log('📦 Estado anterior:', prev);
       const existing = prev.find((i) => i.id === product.id);
+      let newItems;
       if (existing) {
-        return prev.map((i) =>
+        newItems = prev.map((i) =>
           i.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
         );
+      } else {
+        newItems = [...prev, { ...product, quantity: 1 }];
       }
-      return [...prev, { ...product, quantity: 1 }];
+      console.log('✨ Nuevo estado:', newItems);
+      return newItems;
     });
-  };
+  }, []);
 
-  // Eliminar producto
-  const removeItem = (id: number) => {
+  const removeItem = useCallback((id: number) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
-  };
+  }, []);
 
-  // Actualizar cantidad
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = useCallback((id: number, quantity: number) => {
     if (quantity <= 0) {
       removeItem(id);
       return;
@@ -72,27 +72,32 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((prev) =>
       prev.map((i) => (i.id === id ? { ...i, quantity } : i))
     );
-  };
+  }, [removeItem]);
 
-  // Vaciar carrito
-  const clearCart = () => setItems([]);
+  const clearCart = useCallback(() => setItems([]), []);
 
-  // Totales calculados
   const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const itemCount = items.reduce((sum, i) => sum + i.quantity, 0);
 
+  console.log('🔄 Render - items:', items.length, 'total:', total);
+
+  const value = {
+    items,
+    addItem,
+    removeItem,
+    updateQuantity,
+    total,
+    itemCount,
+    clearCart,
+  };
+
   return (
-    <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, total, itemCount, clearCart }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
 }
 
-// ═══════════════════════════════════════════════════════════════
-// 5. HOOK PERSONALIZADO
-// ═══════════════════════════════════════════════════════════════
 export const useCart = () => {
   const ctx = useContext(CartContext);
   if (!ctx) {

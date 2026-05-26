@@ -54,7 +54,6 @@ export default function Navigation() {
         }`}
       >
         <div className="flex items-center justify-between px-6 md:px-12 h-16">
-          {/* Logo */}
           <Link
             to="/"
             className={`font-serif text-xl uppercase tracking-wider transition-colors duration-300 ${
@@ -64,7 +63,6 @@ export default function Navigation() {
             Don Moncho
           </Link>
 
-          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
@@ -79,9 +77,7 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* Right section: CTA (desktop) + Cart + Hamburger (mobile) */}
           <div className="flex items-center gap-3">
-            {/* CTA Button — solo desktop */}
             <Link
               to="/tienda"
               className="hidden md:inline-block px-6 py-2.5 rounded-pill bg-cafe-500 text-white text-xs font-sans font-bold uppercase tracking-[0.1em] hover:bg-coffee-900 transition-colors duration-200"
@@ -89,14 +85,12 @@ export default function Navigation() {
               Comprar
             </Link>
 
-            {/* 🛒 CARRITO — visible en desktop y mobile */}
             <CartDrawer
               triggerClassName={
                 showLightBg ? 'text-coffee-900' : 'text-white'
               }
             />
 
-            {/* Mobile Hamburger — solo mobile */}
             <button
               onClick={() => setMobileOpen(true)}
               className={`md:hidden flex flex-col gap-1.5 p-2 ${
@@ -112,7 +106,6 @@ export default function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] bg-cafe-900 flex flex-col items-center justify-center">
           <button
@@ -120,14 +113,7 @@ export default function Navigation() {
             className="absolute top-5 right-6 text-white p-2"
             aria-label="Cerrar menú"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="4" y1="4" x2="20" y2="20" />
               <line x1="20" y1="4" x2="4" y2="20" />
             </svg>

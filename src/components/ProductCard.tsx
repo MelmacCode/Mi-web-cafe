@@ -1,3 +1,4 @@
+// src/components/ProductCard.tsx
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { useCart } from '@/context/CartContext';
 import { ShoppingCart, Check } from 'lucide-react';
@@ -10,11 +11,19 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const ref = useScrollAnimation<HTMLDivElement>('fade-up', { duration: 0.8 });
-  const { addItem } = useCart();
+  const { addItem, items } = useCart();
   const [added, setAdded] = useState(false);
 
+  console.log('🎴 ProductCard render - items en carrito:', items.length);
+
   const handleAdd = () => {
-    addItem(product);
+    console.log('👆 CLICK en Agregar al carrito:', product.name, 'ID:', product.id);
+    try {
+      addItem(product);
+      console.log('✅ addItem ejecutado sin error');
+    } catch (e) {
+      console.error('❌ Error en addItem:', e);
+    }
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };

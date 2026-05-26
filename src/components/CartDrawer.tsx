@@ -38,7 +38,7 @@ export default function CartDrawer({ triggerClassName }: CartDrawerProps) {
   };
 
   const whatsappUrl = `https://wa.me/584126094680?text=${generateWhatsAppMessage()}`;
- 
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
