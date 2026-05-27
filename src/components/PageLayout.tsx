@@ -5,6 +5,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from './Navigation';
 import Footer from './Footer';
+import BackButton from './BackButton';
+import CookieBanner from './CookieBanner';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,7 +15,7 @@ interface PageLayoutProps {
 }
 
 export default function PageLayout({ children }: PageLayoutProps) {
-  const lenisRef = useRef<Lenis | null>(null);
+  const lenisRef = useRef<Lenis | null>(null);  // ← UNA SOLA "<"
   const location = useLocation();
 
   useEffect(() => {
@@ -23,7 +25,6 @@ export default function PageLayout({ children }: PageLayoutProps) {
     });
 
     lenisRef.current = lenis;
-
     lenis.on('scroll', ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
@@ -45,11 +46,21 @@ export default function PageLayout({ children }: PageLayoutProps) {
     ScrollTrigger.refresh();
   }, [location.pathname]);
 
+  const showBackButton = location.pathname !== '/';
+
   return (
     <>
       <Navigation />
       <main>{children}</main>
+      
+      {showBackButton && (
+        <div className="bg-sand-50 px-6 md:px-12 py-6 max-w-6xl mx-auto">
+          <BackButton label="Volver atrás" />
+        </div>
+      )}
+      
       <Footer />
+      <CookieBanner />
     </>
   );
 }

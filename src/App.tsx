@@ -5,7 +5,9 @@ import Nosotros from './pages/Nosotros'
 import Tienda from './pages/Tienda'
 import Blog from './pages/Blog'
 import Comunidad from './pages/Comunidad'
-import Gracias from './pages/Gracias'  // ← AGREGAR
+import Gracias from './pages/Gracias'
+import Cookies from './pages/Cookies'        // ← NUEVO
+import NotFound from './pages/NotFound'      // ← NUEVO
 
 export default function App() {
   return (
@@ -16,7 +18,9 @@ export default function App() {
         <Route path="/tienda" element={<Tienda />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/comunidad" element={<Comunidad />} />
-        <Route path="/gracias" element={<Gracias />} />  // ← AGREGAR
+        <Route path="/gracias" element={<Gracias />} />
+        <Route path="/cookies" element={<Cookies />} />     // ← NUEVO
+        <Route path="*" element={<NotFound />} />            // ← NUEVO: 404
       </Routes>
     </PageLayout>
   )

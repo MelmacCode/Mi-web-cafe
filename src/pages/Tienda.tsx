@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet-async';
-import BackButton from '@/components/BackButton';           // ← IMPORTAR
 import PageHero from '../sections/tienda/PageHero'
 import FilterBar from '../sections/tienda/FilterBar'
 import ProductGrid from '../sections/tienda/ProductGrid'
@@ -16,14 +15,12 @@ export default function Tienda() {
         <meta property="og:description" content="Café 100% orgánico de los Andes venezolanos" />
         <meta property="og:image" content="https://donmoncho.com/images/og-tienda.jpg" />
         <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://donmoncho.com/tienda" />
       </Helmet>
       
       <PageHero />
       
-      {/* ← BackButton debajo del hero */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 pt-4">
-        <BackButton label="Seguir comprando" />
-      </div>
+      {/* BackButton YA NO VA AQUÍ — ahora está global en PageLayout */}
       
       <FilterBar />
       <ProductGrid />
