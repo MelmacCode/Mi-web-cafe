@@ -15,7 +15,8 @@ interface PageLayoutProps {
 }
 
 export default function PageLayout({ children }: PageLayoutProps) {
-  const lenisRef = useRef<Lenis | null>(null);  // ← UNA SOLA "<"
+  // ← CORREGIDO: Tipo explícito para useRef
+  const lenisRef = useRef<Lenis | null>(null);
   const location = useLocation();
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router'
 import { HelmetProvider } from 'react-helmet-async'
 import { CartProvider } from './context/CartContext'
-import { CookieConsentProvider } from './context/CookieConsentContext'    // ← NUEVO
+import { CookieConsentProvider } from './context/CookieConsentContext'
 import { Toaster } from '@/components/ui/sonner'
 import './index.css'
 import App from './App.tsx'
@@ -11,7 +11,7 @@ import App from './App.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>
-      <CookieConsentProvider>    {/* ← NUEVO */}
+      <CookieConsentProvider>
         <CartProvider>
           <HashRouter>
             <App />
@@ -27,7 +27,7 @@ createRoot(document.getElementById('root')!).render(
             />
           </HashRouter>
         </CartProvider>
-      </CookieConsentProvider>    {/* ← NUEVO */}
+      </CookieConsentProvider>
     </HelmetProvider>
   </StrictMode>,
 )

@@ -18,6 +18,7 @@ interface CookieConsentContextType {
   setShowBanner: (show: boolean) => void;
 }
 
+// ← CORREGIDO: Agregar tipo genérico
 const CookieConsentContext = createContext<CookieConsentContextType | null>(null);
 
 const STORAGE_KEY = 'donmoncho-cookies';
@@ -63,7 +64,9 @@ export function CookieConsentProvider({ children }: { children: React.ReactNode 
   };
 
   return (
-    <CookieConsentContext.Provider value={{ consent, acceptAll, rejectAll, setCategory, showBanner, setShowBanner }}>
+    <CookieConsentContext.Provider
+      value={{ consent, acceptAll, rejectAll, setCategory, showBanner, setShowBanner }}
+    >
       {children}
     </CookieConsentContext.Provider>
   );
