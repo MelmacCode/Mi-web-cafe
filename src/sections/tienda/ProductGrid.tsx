@@ -1,11 +1,11 @@
-import { useState, useMemo } from 'react';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
-import { products } from '../../data/products';
-import ProductCard from '../../components/ProductCard';
+import { useState, useMemo, useEffect } from 'react';
+import ProductCard from '@/components/ProductCard';
+import { ProductSkeletonGrid } from '@/components/ProductSkeleton';
+import { products } from '@/data/products';
 
 export default function ProductGrid() {
   const [activeCategory, setActiveCategory] = useState('todos');
-  const ref = useScrollAnimation<HTMLDivElement>('fade-up', { stagger: 0.1, childSelector: '.shop-card' });
+  const [isLoading, setIsLoading] = useState(true);
 
   const filteredProducts = useMemo(() => {
     if (activeCategory === 'todos') return products;
@@ -13,22 +13,46 @@ export default function ProductGrid() {
   }, [activeCategory]);
 
   // Listen for filter changes from FilterBar
-  useState(() => {
+  useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail;
-      if (detail?.category) setActiveCategory(detail.category);
+      if (detail?.category) {
+        setIsLoading(true);
+        setActiveCategory(detail.category);
+      }
     };
     window.addEventListener('filter-change', handler);
     return () => window.removeEventListener('filter-change', handler);
-  });
+  }, []);
+
+  // Simulate network loading when category changes
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 600);
+    return () => clearTimeout(timer);
+  }, [activeCategory]);
 
   return (
-    <section id="product-grid" className="bg-sand-50 py-12 md:py-16 px-6 md:px-12 pb-24 md:pb-32">
-      <div ref={ref} className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {isLoading ? (
+          <ProductSkeletonGrid count={6} />
+        ) : (
+          filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        )}
       </div>
+
+      {!isLoading && filteredProducts.length === 0 && (
+        <div className="text-center py-20">
+          <p className="text-coffee-500 text-lg font-medium">
+            No hay productos en esta categoría.
+          </p>
+          <p className="text-coffee-400 text-sm mt-1">
+            Prueba con otra selección de filtros.
+          </p>
+        </div>
+      )}
     </section>
   );
 }

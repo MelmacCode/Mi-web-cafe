@@ -7,6 +7,8 @@ import Navigation from './Navigation';
 import Footer from './Footer';
 import BackButton from './BackButton';
 import CookieBanner from './CookieBanner';
+import PageTransition from './PageTransition';
+import { ErrorBoundary } from './ErrorBoundary';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,7 +17,6 @@ interface PageLayoutProps {
 }
 
 export default function PageLayout({ children }: PageLayoutProps) {
-  // ← CORREGIDO: Tipo explícito para useRef
   const lenisRef = useRef<Lenis | null>(null);
   const location = useLocation();
 
@@ -50,18 +51,21 @@ export default function PageLayout({ children }: PageLayoutProps) {
   const showBackButton = location.pathname !== '/';
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navigation />
-      <main>{children}</main>
-      
-      {showBackButton && (
-        <div className="bg-sand-50 px-6 md:px-12 py-6 max-w-6xl mx-auto">
-          <BackButton label="Volver atrás" />
-        </div>
-      )}
-      
+
+      <ErrorBoundary>
+        <main className="flex-1">
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </main>
+      </ErrorBoundary>
+
       <Footer />
+
+      {showBackButton && <BackButton />}
       <CookieBanner />
-    </>
+    </div>
   );
 }
