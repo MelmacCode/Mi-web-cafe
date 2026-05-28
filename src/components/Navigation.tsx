@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router';
-import CartDrawer from './CartDrawer';
 
 const navLinks = [
   { label: 'Inicio', to: '/' },
@@ -54,6 +53,7 @@ export default function Navigation() {
         }`}
       >
         <div className="flex items-center justify-between px-6 md:px-12 h-16">
+          {/* Logo */}
           <Link
             to="/"
             className={`font-serif text-xl uppercase tracking-wider transition-colors duration-300 ${
@@ -63,6 +63,7 @@ export default function Navigation() {
             Don Moncho
           </Link>
 
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
@@ -77,35 +78,28 @@ export default function Navigation() {
             ))}
           </div>
 
-          <div className="flex items-center gap-3">
-            <Link
-              to="/tienda"
-              className="hidden md:inline-block px-6 py-2.5 rounded-pill bg-cafe-500 text-white text-xs font-sans font-bold uppercase tracking-[0.1em] hover:bg-coffee-900 transition-colors duration-200"
-            >
-              Comprar
-            </Link>
+          {/* CTA Button */}
+          <Link
+            to="/tienda"
+            className="hidden md:inline-block px-6 py-2.5 rounded-pill bg-cafe-500 text-white text-xs font-sans font-bold uppercase tracking-[0.1em] hover:bg-coffee-900 transition-colors duration-200"
+          >
+            Comprar
+          </Link>
 
-            <CartDrawer
-              triggerClassName={
-                showLightBg ? 'text-coffee-900' : 'text-white'
-              }
-            />
-
-            <button
-              onClick={() => setMobileOpen(true)}
-              className={`md:hidden flex flex-col gap-1.5 p-2 ${
-                showLightBg ? 'text-coffee-900' : 'text-white'
-              }`}
-              aria-label="Abrir menú"
-            >
-              <span className="block w-6 h-0.5 bg-current" />
-              <span className="block w-6 h-0.5 bg-current" />
-              <span className="block w-6 h-0.5 bg-current" />
-            </button>
-          </div>
+          {/* Mobile Hamburger */}
+          <button
+            onClick={() => setMobileOpen(true)}
+            className={`md:hidden flex flex-col gap-1.5 p-2 ${showLightBg ? 'text-coffee-900' : 'text-white'}`}
+            aria-label="Abrir menú"
+          >
+            <span className="block w-6 h-0.5 bg-current" />
+            <span className="block w-6 h-0.5 bg-current" />
+            <span className="block w-6 h-0.5 bg-current" />
+          </button>
         </div>
       </nav>
 
+      {/* Mobile Menu Overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[60] bg-cafe-900 flex flex-col items-center justify-center">
           <button

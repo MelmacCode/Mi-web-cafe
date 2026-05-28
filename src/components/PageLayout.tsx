@@ -5,10 +5,6 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from './Navigation';
 import Footer from './Footer';
-import BackButton from './BackButton';
-import CookieBanner from './CookieBanner';
-import PageTransition from './PageTransition';
-import { ErrorBoundary } from './ErrorBoundary';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,24 +44,11 @@ export default function PageLayout({ children }: PageLayoutProps) {
     ScrollTrigger.refresh();
   }, [location.pathname]);
 
-  const showBackButton = location.pathname !== '/';
-
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <Navigation />
-
-      <ErrorBoundary>
-        <main className="flex-1">
-          <PageTransition>
-            {children}
-          </PageTransition>
-        </main>
-      </ErrorBoundary>
-
+      <main>{children}</main>
       <Footer />
-
-      {showBackButton && <BackButton />}
-      <CookieBanner />
-    </div>
+    </>
   );
 }
